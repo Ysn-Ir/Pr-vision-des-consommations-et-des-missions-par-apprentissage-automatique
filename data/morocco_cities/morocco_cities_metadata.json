@@ -1,0 +1,44 @@
+{
+  "project": "Projet 04 — Prévision des consommations et des émissions par apprentissage automatique",
+  "territories": {
+    "Tetouan": {
+      "region": "Tanger-Tétouan-Al Hoceïma",
+      "source": "UCI Machine Learning Repository (id=849), Amendis SCADA System",
+      "authors": "A. Salam and A. El Hibaoui (2018)",
+      "period": "2017-01-01 to 2017-12-30",
+      "resolution": "10 minutes (52 416 observations)",
+      "variables": ["Temperature", "Humidity", "Wind Speed", "general diffuse flows", "diffuse flows", "Zone 1 Power Consumption", "Zone 2 Power Consumption", "Zone 3 Power Consumption"],
+      "units": "kW (consommations), °C (température), % (humidité), m/s (vent)",
+      "license": "Creative Commons Attribution 4.0 International (CC BY 4.0)"
+    },
+    "Marrakech": {
+      "region": "Marrakech-Safi",
+      "source": "Zenodo (DOI: 10.5281/zenodo.16423697) / Mendeley Data (DOI: 10.17632/6s9mfp3bd8.1)",
+      "paper": "High-resolution smart meter load dataset collected from multiple cities in Morocco (Data in Brief, 2025)",
+      "authors": "M. Bensalah, A. Hair, R. Rabie, H. Derrouz",
+      "period": "2023-01-09 to 2024-01-08",
+      "resolution": "30 minutes (17 501 observations)",
+      "variables": ["zone1", "zone2"],
+      "units": "kW",
+      "license": "Creative Commons Attribution 4.0 International (CC BY 4.0)"
+    },
+    "Laayoune": {
+      "region": "Laâyoune-Sakia El Hamra",
+      "source": "Zenodo (DOI: 10.5281/zenodo.16423697) / Mendeley Data (DOI: 10.17632/6s9mfp3bd8.1)",
+      "paper": "High-resolution smart meter load dataset collected from multiple cities in Morocco (Data in Brief, 2025)",
+      "authors": "M. Bensalah, A. Hair, R. Rabie, H. Derrouz",
+      "period": "2022-09-14 to 2023-09-14",
+      "resolution": "10 minutes (88 890 observations)",
+      "variables": ["zone1", "zone2", "zone3", "zone4", "zone5"],
+      "units": "Amperes (A) sur transformateurs 22 kV",
+      "license": "Creative Commons Attribution 4.0 International (CC BY 4.0)"
+    },
+    "Fes_Meknes": {
+      "region": "Fès-Meknès",
+      "status": "Transposition méthodologique (ENSA Fès)",
+      "weather_source": "Open-Meteo Historical Weather API (ERA5 Reanalysis)",
+      "coordinates": {"latitude": 34.0333, "longitude": -5.0000},
+      "variables": ["temperature_2m", "relative_humidity_2m", "wind_speed_10m"]
+    }
+  }
+}
