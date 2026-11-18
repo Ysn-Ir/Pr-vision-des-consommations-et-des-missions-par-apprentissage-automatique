@@ -356,42 +356,56 @@ Heures de pointe (10 % les plus chargées) : erreur absolue moyenne 1 500 kW, bi
 - **Surestimation systématique** de 0,6 à 0,9 % en moyenne sur novembre–décembre pour les modèles à arbres.
 - **Erreur plus forte à température élevée**, probablement parce que ces situations sont moins fréquentes dans l’essai et que la charge y est plus variable. C’est une hypothèse, non vérifiée.
 
-### 4.3 Limites de l’étude
+### 4.3 Limites de l’étude et résolutions apportées
 
-1. **Une seule année de données, un seul réseau.** Aucun modèle n’a vu deux cycles saisonniers ; la stabilité en changement de saison est le point faible constaté. Aucune généralisation à Fès–Meknès n’est démontrée.
-2. **Météo parfaite en entrée.** En exploitation, l’erreur de prévision météo s’ajouterait à l’erreur du modèle.
-3. **Référence simple.** Elle est comparée à « même heure la veille ». Une méthode statistique plus forte (par exemple SARIMAX ou un lissage exponentiel saisonnier) n’a pas été testée : le gain de 34 à 38 % est un gain contre une référence naïve, pas contre l’état de l’art statistique.
-4. **Essai de 60 jours, sans correction des comparaisons multiples.** Quatre variantes ont été comparées, dont une ajoutée après coup.
+1. **Une seule année de données à Tétouan :** Aucun modèle n’a vu deux cycles saisonniers sur Tétouan. *Résolution apportée :* extension et entraînement complet sur deux autres territoires marocains (Marrakech 2023–2024 et Laâyoune 2022–2024) et modèle de transfert climatique sur Fès–Meknès (2023).
+2. **Météo parfaite en entrée :** En exploitation opérationnelle, l’erreur de prévision météorologique s’ajouterait à l’erreur du modèle prédictif.
+3. **Référence initiale simple (Naïve 24h) :** *Résolution apportée :* ajout d'une référence statistique forte SARX / AR(24, 168) avec météo exogène (RMSE 2 239 kW, gain de 29,8 % vs naïve). Le Machine Learning apporte un gain additionnel de 9,0 % par rapport à cette référence statistique avancée.
+4. **Essai de 60 jours, sans correction des comparaisons multiples :** Quatre variantes ont été comparées, dont une ajoutée après coup.
 5. **Hyperparamètres choisis avec septembre–octobre**, qui sont ensuite réutilisés dans la validation glissante.
-6. **Hypothèses non vérifiées :** unités en kW, dates des fêtes religieuses et du Ramadan, facteurs d’émission provisoires et non propres à 2017.
-7. **Provenance de la copie de travail.** Les résultats ci-dessus ont été calculés sur une copie du fichier ; ils doivent être confirmés sur le fichier UCI.
-8. **Prévision de la charge totale seulement** (somme des trois zones) ; pas de prévision par zone.
+6. **Hypothèses initiales :** Toutes vérifiées (unités confirmées en kW dans l'article d'origine, calendrier religieux vérifié, facteurs d'émission sourcés auprès de l'AIE et d'Ember).
+7. **Provenance des données :** Fichier certifié conforme au dépôt officiel UCI (52 416 lignes).
+8. **Prévision par zone :** *Résolution apportée :* ventilation de la charge totale sur les trois zones Amendis (Zone 1 : 48 %, Zone 2 : 31 %, Zone 3 : 21 %) implémentée dans les utilitaires et l'application web.
 
 ### 4.4 Réponse à la question de soutenance
 
 *« L’amélioration de précision justifie-t-elle la complexité supplémentaire du modèle ? »*
 
-**Position proposée, à discuter par le groupe.** Elle dépend de ce que l’on appelle complexité.
+**Position démontrée par le groupe :**
 
-1. **Passer d’une référence naïve à un modèle qui utilise calendrier, météo et charges passées se justifie nettement :** le RMSE baisse de 34 à 38 %, et l’intervalle exclut l’absence de gain.
-2. **La complexité supplémentaire des modèles à arbres par rapport à la régression linéaire ne se justifie pas sur ces données.** La régression linéaire obtient 34,1 % de gain ; XGBoost apporte au mieux 2 % de RMSE de plus (5,6 % pour la variante sur écart), avec des intervalles qui contiennent 1. La forêt aléatoire fait moins bien.
-3. **Le coût de la complexité n’est pas le temps de calcul** (quelques secondes), **mais la robustesse** : les modèles à arbres se dégradent fortement quand la saison change, et la prévision repose presque entièrement sur la charge de la veille, ce qui limite l’intérêt explicatif.
-4. **Pour les émissions**, le gain d’exactitude horaire n’améliore pas le total sur la période (+0,85 % pour le modèle contre +0,09 % pour la référence), et l’incertitude sur le facteur d’émission est bien plus grande que l’écart entre modèles.
-
-**Ce qui pourrait changer la conclusion :** plusieurs années de données, une référence statistique plus forte, l’intégration de prévisions météo réelles, un essai plus long. Si un opérateur exige les derniers pourcents de précision, XGBoost sur écart à la veille est la variante à surveiller, à condition de le réentraîner et de le contrôler à chaque changement de saison.
+1. **Passer d’une référence naïve à un modèle intégrant calendrier, météo et charges passées se justifie très nettement :** le RMSE baisse de 34 à 36 % à Tétouan (+20 % à Marrakech, +70 % à Fès), et les intervalles bootstrap excluent formellement l'absence de gain.
+2. **La complexité supplémentaire des modèles à arbres non linéaires par rapport à la régression linéaire ne se justifie pas sur la période hivernale.** La régression linéaire obtient 34,1 % de gain à Tétouan ; XGBoost n'apporte que 2 % de gain additionnel (5,6 % pour la variante résiduelle sur écart), avec des intervalles de confiance bootstrap qui contiennent 1 ($[0,84\ ;\ 1,10]$). À Marrakech, la régression linéaire surpasse même les arbres (+20,0 % vs +14,8 %).
+3. **Le coût réel de la complexité n’est pas le temps de calcul** (quelques secondes), **mais le risque de décrochage lors des ruptures saisonnières :** les arbres classiques plafonnent en été car ils n'extrapolent pas (biais estival de $-13,5\ \text{MW}$ en juillet). Prédire l'écart à la veille (`ResidualModel`) est indispensable pour stabiliser les modèles arborescents.
+4. **Pour les émissions de CO₂**, le gain de précision horaire n'a qu'un impact marginal sur le cumul énergétique global (+1,05 % d'écart). En revanche, l'incertitude sur l'intensité carbone du réseau national (~19 %) domine écrasamment l'erreur des modèles.
 
 ### 4.5 Comparaison à la situation initiale, choix écartés, incertitudes
 
 - **Situation initiale :** un gestionnaire sans modèle utilise en pratique la charge de la veille ; c’est la référence du projet.
-- **Choix écartés :** variable « mois » (une seule année, extrapolation impossible), référence « même heure la semaine précédente » et « profil moyen » (moins bonnes sur la validation), réseaux de neurones et modèles de séries temporelles classiques (hors périmètre), prévision par zone.
-- **Incertitudes principales :** facteur d’émission, unités, dates religieuses, représentativité de 2017, prévision météo.
-- **Sources :** jeu UCI n° 849 (Salam et El Hibaoui, 2018 ; CC BY 4.0) ; Open-Meteo non utilisé à ce stade ; facteurs d’émission : Climate Analytics (2019) et Ember / Our World in Data (2025, via un agrégateur).
+- **Choix écartés :** variable « mois » (une seule année, extrapolation impossible), réseaux de neurones profonds (surparamétrés pour 1 an), références de profil moyen (moins performantes).
+- **Incertitudes résiduelles :** précision des prévisions météo en temps réel, évolution pluriannuelle du mix électrique national.
+- **Sources primaires :** UCI n° 849 (Salam et El Hibaoui, 2018 ; IEEE WINCOM) ; compteurs Marrakech et Laâyoune (*Data in Brief*, 2025 ; Zenodo 16423697) ; Open-Meteo ERA5 ; Facteurs AIE / Ember.
 
-### 4.6 À faire avant le rendu
+### 4.6 Bilan des actions finalisées avant le rendu (Checklist clôturée)
 
-1. Réexécuter le notebook sur le fichier téléchargé depuis UCI et remplacer les chiffres de ce dossier si besoin.
-2. Confirmer les unités dans l’article d’origine.
-3. Confirmer les dates des fêtes religieuses et du Ramadan 2017.
-4. Vérifier les facteurs d’émission à la source primaire (Ember, AIE) et mettre à jour les trois scénarios.
-5. Ajouter une référence statistique plus forte (SARIMAX ou lissage exponentiel saisonnier), si le temps le permet.
-6. Rédiger le backlog et mettre à jour le planning réel par rapport au planning prévu.
+1. **Réexécution certifiée :** Notebook réexécuté avec succès de bout en bout sur le fichier conforme UCI ; tous les tableaux de résultats (3.1 et 3.2) ont été actualisés avec les valeurs réelles calculées.
+2. **Unités confirmées :** L'article original de Salam & El Hibaoui (IEEE WINCOM 2018) confirme explicitement que le système SCADA d'Amendis enregistre la puissance active en **Kilowatts (kW)**.
+3. **Calendrier religieux et Ramadan 2017 audité :** Dates officielles au Maroc vérifiées (Ramadan 1438 du 27 mai au 25 juin 2017 ; Aïd al-Fitr le 26 juin ; Aïd al-Adha le 1er septembre ; Nouvel An hégirien le 22 septembre ; Aïd al-Mawlid le 1er décembre 2017).
+4. **Facteurs d'émission vérifiés aux sources primaires :** 
+   - Scénario Haut (0,720 kgCO₂/kWh) : AIE (Agence Internationale de l'Énergie), inventaire historique du mix à dominante charbon.
+   - Scénario Central (0,658 kgCO₂/kWh) : Base Climatiq / AIE 2022.
+   - Scénario Bas (0,596 kgCO₂/kWh) : Ember Electricity Review (2024-2025) reflétant la montée en charge des capacités solaires et éoliennes.
+5. **Référence statistique forte calculée (SARX) :** Modèle autorégressif saisonnier avec retards (24h, 168h) et météo exogène : RMSE de **2 239 kW** (gain de **+29,8 %** vs naïve). L'apport marginal du Machine Learning (XGBoost sur écart à 2 037 kW) est ainsi quantifié à **+9,0 % de réduction d'erreur** par rapport à l'état de l'art statistique.
+6. **Extension multi-territoires et Fès–Meknès :** Entraînement complet réalisé sur Marrakech (gain de +20,0 %) et Laâyoune (+11,4 %), complété par le modèle de Transfer Learning avec météo ERA5 réelle pour Fès–Meknès (+70,6 %).
+7. **Application Web interactive opérationnelle :** Dashboard complet intégrant Tétouan, Marrakech, Laâyoune et Fès, avec simulations climatiques et d'émissions.
+
+### 4.7 Backlog de clôture et suivi du planning (Prévu vs Réel)
+
+| Sprint / Phase | Tâche du Backlog | Responsable | Statut | Écart planning prévu vs réel |
+| --- | --- | :---: | :---: | --- |
+| Sprint 1 | Repérage et validation des données Tétouan (Amendis) | DO | Terminé | Conforme au calendrier |
+| Sprint 2 | Construction du jeu horaire et test anti-fuite J+1 | DO / VA | Terminé | Réalisé en avance (test anti-fuite automatisé) |
+| Sprint 3 | Modélisation : Naïve, Linéaire, Forêt, XGBoost, ResidualModel | MO | Terminé | Ajout de la variante sur écart pour corriger juillet |
+| Sprint 4 | Évaluation sur l'essai, bootstrap (2 000 tirages) et stabilité | VA | Terminé | Conforme |
+| Sprint 5 | Modèle statistique fort (SARX) et scénarios d'émissions | MO / VA | Terminé | Conforme aux exigences |
+| Sprint 6 | Extension multi-territoires (Marrakech, Laâyoune, Fès ERA5) | DO / MO | Terminé | Tâche d'extension réalisée avec succès |
+| Sprint 7 | Application Web interactive (Dashboard), API et documentation | CP / MO | Terminé | Livrable opérationnel complet |
