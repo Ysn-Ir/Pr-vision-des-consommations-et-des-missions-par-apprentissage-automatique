@@ -1,0 +1,83 @@
+{
+  "city": "fes",
+  "statut": "Transposition méthodologique & Transfer Learning (ENSA Fès)",
+  "selected_on_validation": "Régression linéaire",
+  "val_scores": {
+    "Régression linéaire": {
+      "MAE": 1528.2151405614936,
+      "RMSE": 1912.9070462708776,
+      "MAPE_%": 2.0208292797149467,
+      "biais": -135.28845814211445
+    },
+    "Forêt aléatoire": {
+      "MAE": 2954.429772950997,
+      "RMSE": 4292.192721982919,
+      "MAPE_%": 3.4206670844703795,
+      "biais": 642.4306385563742
+    },
+    "XGBoost": {
+      "MAE": 2478.3826416850256,
+      "RMSE": 3407.1442211765598,
+      "MAPE_%": 2.9439006549423796,
+      "biais": 549.4147566505677
+    },
+    "XGBoost sur écart à la veille": {
+      "MAE": 2830.1991413931655,
+      "RMSE": 3796.8169442855938,
+      "MAPE_%": 3.382773495033789,
+      "biais": 263.15972742670147
+    }
+  },
+  "test_metrics": {
+    "Référence (Naïve 24 h)": {
+      "MAE": 4882.269591793073,
+      "RMSE": 6601.525004792558,
+      "MAPE_%": 6.265526610216667,
+      "biais": 86.78583302912564,
+      "gain_RMSE_%": 0.0,
+      "gain_MAE_%": 0.0,
+      "entraînement_s": 0.0,
+      "prédiction_s": 0.0
+    },
+    "Régression linéaire": {
+      "MAE": 1495.7710523253925,
+      "RMSE": 1943.9834469137998,
+      "MAPE_%": 2.045804908013321,
+      "biais": 1.4294796407968653,
+      "entraînement_s": 0.035,
+      "prédiction_s": 0.008,
+      "gain_RMSE_%": 70.55,
+      "gain_MAE_%": 69.36
+    },
+    "Forêt aléatoire": {
+      "MAE": 2731.506977280227,
+      "RMSE": 3713.607681000817,
+      "MAPE_%": 3.531529656910322,
+      "biais": 37.62940055656108,
+      "entraînement_s": 0.98,
+      "prédiction_s": 0.056,
+      "gain_RMSE_%": 43.75,
+      "gain_MAE_%": 44.05
+    },
+    "XGBoost": {
+      "MAE": 2328.1466938456683,
+      "RMSE": 3014.908770475016,
+      "MAPE_%": 3.0251102751005012,
+      "biais": -79.3315868740282,
+      "entraînement_s": 0.275,
+      "prédiction_s": 0.005,
+      "gain_RMSE_%": 54.33,
+      "gain_MAE_%": 52.31
+    },
+    "XGBoost sur écart à la veille": {
+      "MAE": 2721.151408362672,
+      "RMSE": 3703.0700093811656,
+      "MAPE_%": 3.6483536081636903,
+      "biais": 389.42485808281697,
+      "entraînement_s": 0.247,
+      "prédiction_s": 0.005,
+      "gain_RMSE_%": 43.91,
+      "gain_MAE_%": 44.26
+    }
+  }
+}
