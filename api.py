@@ -70,6 +70,17 @@ CITY_CONFIG = {
         "model_file": ART / "model_laayoune.joblib",
         "data_file": ART / "features_laayoune_hourly.csv",
         "results_file": ART / "results_laayoune.json"
+    },
+    "fes": {
+        "name": "Fès-Meknès",
+        "region": "Fès-Meknès (Transfer Learning ENSA)",
+        "unit": "kW",
+        "energy_unit": "MWh",
+        "target_col": "load_kw",
+        "default_date": "2023-11-15",
+        "model_file": ART / "model_fes.joblib",
+        "data_file": ART / "features_fes_hourly.csv",
+        "results_file": ART / "results_fes.json"
     }
 }
 
@@ -154,7 +165,8 @@ def forecast(
     simulated_pred = simulate_weather_anomaly(rows, base_pred, delta_temp) if city_key != "laayoune" else base_pred
     
     # 3. Intervalles d'incertitude (90%)
-    rmse_val = 2037.4 if city_key == "tetouan" else (142.2 if city_key == "marrakech" else 26.9)
+    rmse_map = {"tetouan": 2037.4, "marrakech": 142.2, "laayoune": 26.9, "fes": 1944.0}
+    rmse_val = rmse_map.get(city_key, 2000.0)
     lower_90, upper_90 = compute_prediction_intervals(simulated_pred, rmse=rmse_val, confidence=0.90)
     
     # 4. Total journalier
@@ -224,6 +236,13 @@ def presets(city: str = "tetouan"):
             {"label": "Pointe Soirée (21h)", "date": "2023-06-20", "desc": "Pic d'éclairage et ventilation"},
             {"label": "Hiver Océanique", "date": "2023-01-10", "desc": "Profil thermique modéré"}
         ]
+    elif city == "fes":
+        return [
+            {"label": "15 Nov (Essai Hiver)", "date": "2023-11-15", "desc": "Semaine typique d'évaluation 2023"},
+            {"label": "12 Août (Canicule 46°C)", "date": "2023-08-12", "desc": "Pointe de climatisation extrême à Fès"},
+            {"label": "25 Jan (Gel nocturne -1°C)", "date": "2023-01-25", "desc": "Forte demande de chauffage"},
+            {"label": "05 Avr (Ramadan 2023)", "date": "2023-04-05", "desc": "Activité nocturne et rupture du jeûne"}
+        ]
     else:
         return [
             {"label": "15 Nov (Essai typique)", "date": "2017-11-15", "desc": "Période d'évaluation hivernale"},
@@ -290,6 +309,9 @@ def dashboard():
                 </button>
                 <button onclick="selectCity('laayoune')" id="pillLaayoune" class="px-3 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition flex items-center gap-1.5">
                     <i class="fa-solid fa-wind text-purple-400"></i> Laâyoune (2022-24)
+                </button>
+                <button onclick="selectCity('fes')" id="pillFes" class="px-3 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-graduation-cap text-emerald-400"></i> Fès–Meknès (ENSA)
                 </button>
             </div>
 
@@ -565,18 +587,20 @@ def dashboard():
         const cityDates = {
             tetouan: { default: "2017-11-15", min: "2017-01-08", max: "2017-12-30" },
             marrakech: { default: "2023-11-15", min: "2023-01-16", max: "2024-01-08" },
-            laayoune: { default: "2023-07-15", min: "2022-09-22", max: "2023-09-14" }
+            laayoune: { default: "2023-07-15", min: "2022-09-22", max: "2023-09-14" },
+            fes: { default: "2023-11-15", min: "2023-01-16", max: "2023-12-31" }
         };
 
         function selectCity(city) {
             currentCity = city;
-            ['pillTetouan', 'pillMarrakech', 'pillLaayoune'].forEach(id => {
+            ['pillTetouan', 'pillMarrakech', 'pillLaayoune', 'pillFes'].forEach(id => {
                 const el = document.getElementById(id);
                 el.className = 'px-3 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition flex items-center gap-1.5';
             });
             if (city === 'tetouan') document.getElementById('pillTetouan').className = 'px-3 py-1 rounded-lg text-xs font-semibold bg-blue-600 text-white transition flex items-center gap-1.5';
             if (city === 'marrakech') document.getElementById('pillMarrakech').className = 'px-3 py-1 rounded-lg text-xs font-semibold bg-blue-600 text-white transition flex items-center gap-1.5';
             if (city === 'laayoune') document.getElementById('pillLaayoune').className = 'px-3 py-1 rounded-lg text-xs font-semibold bg-blue-600 text-white transition flex items-center gap-1.5';
+            if (city === 'fes') document.getElementById('pillFes').className = 'px-3 py-1 rounded-lg text-xs font-semibold bg-blue-600 text-white transition flex items-center gap-1.5';
 
             // Show/hide zone switcher
             const zSwitch = document.getElementById('zoneSwitchContainer');
@@ -660,8 +684,10 @@ def dashboard():
                 document.getElementById('kpiGain').innerHTML = '<i class="fa-solid fa-arrow-down mr-1"></i> -36.1% vs persistance (RMSE)';
             } else if (currentCity === 'marrakech') {
                 document.getElementById('kpiGain').innerHTML = '<i class="fa-solid fa-arrow-down mr-1"></i> -20.0% vs persistance (RMSE)';
-            } else {
+            } else if (currentCity === 'laayoune') {
                 document.getElementById('kpiGain').innerHTML = '<i class="fa-solid fa-arrow-down mr-1"></i> -11.4% vs persistance (RMSE)';
+            } else {
+                document.getElementById('kpiGain').innerHTML = '<i class="fa-solid fa-arrow-down mr-1"></i> -70.6% vs persistance (RMSE)';
             }
 
             // Emissions

@@ -80,6 +80,10 @@ jupyter nbconvert --to notebook --execute --inplace projet04_prevision_tetouan.i
 ```bash
 python train_multi_city.py
 ```
+* Pour entraîner le modèle de transfert et de transposition climatique sur Fès–Meknès :
+```bash
+python train_fes_transfer.py
+```
 
 ---
 
@@ -97,13 +101,14 @@ python train_multi_city.py
 
 ⭐ *Modèle retenu sur la validation de Tétouan.*
 
-### 4.2 Benchmark multi-territoires (Marrakech & Laâyoune)
+### 4.2 Benchmark multi-territoires (Tétouan, Marrakech, Laâyoune, Fès-Meknès)
 
 | Territoire | Grandeur & Période d'essai | Modèle Retenu | RMSE | MAE | MAPE (%) | Gain RMSE vs Réf. |
 | :--- | :--- | :--- | :---: | :---: | :---: | :---: |
 | **Tétouan** | Charge urbaine (kW) &middot; Nov–Déc 2017 | XGBoost sur écart | 2 037.4 kW | 1 471.2 kW | 2.34 % | **+36.1 %** |
 | **Marrakech** | Puissance active 22 kV (kW) &middot; Nov–Jan 2023 | Régression Linéaire | 142.2 kW | 115.6 kW | 9.16 % | **+20.0 %** |
 | **Laâyoune** | Courant total 22 kV (A) &middot; Juil–Août 2023 | Régression Linéaire | 26.9 A | 20.4 A | 3.97 % | **+11.4 %** |
+| **Fès–Meknès** | Charge urbaine (kW, ERA5) &middot; Nov–Déc 2023 | Régression Linéaire | 1 944.0 kW | 1 496.0 kW | 2.05 % | **+70.6 %** |
 
 ---
 
