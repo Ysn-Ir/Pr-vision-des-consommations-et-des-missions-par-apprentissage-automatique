@@ -1,0 +1,83 @@
+{
+  "city": "laayoune",
+  "target": "current_A",
+  "selected_on_validation": "XGBoost sur écart à la veille",
+  "val_scores": {
+    "Régression linéaire": {
+      "MAE": 24.151570799138,
+      "RMSE": 33.02696765983063,
+      "MAPE_%": 4.36141526553156,
+      "biais": -2.9428469403309827
+    },
+    "Forêt aléatoire": {
+      "MAE": 22.855823098214984,
+      "RMSE": 30.98190679752717,
+      "MAPE_%": 4.137757603059791,
+      "biais": -4.574080347512005
+    },
+    "XGBoost": {
+      "MAE": 22.882571656829892,
+      "RMSE": 30.668665769207625,
+      "MAPE_%": 4.154835087123569,
+      "biais": -3.9707621895767526
+    },
+    "XGBoost sur écart à la veille": {
+      "MAE": 22.486422794297663,
+      "RMSE": 30.096158625623612,
+      "MAPE_%": 4.086162566432312,
+      "biais": -3.4914253073129187
+    }
+  },
+  "test_metrics": {
+    "Référence (Naïve 24 h)": {
+      "MAE": 21.693895285087724,
+      "RMSE": 30.40506917837712,
+      "MAPE_%": 4.110283277379547,
+      "biais": -0.6782154605263156,
+      "entraînement_s": 0.0,
+      "prédiction_s": 0.0,
+      "gain_RMSE_%": 0.0,
+      "gain_MAE_%": 0.0
+    },
+    "Régression linéaire": {
+      "MAE": 20.3810049936252,
+      "RMSE": 26.941556407808662,
+      "MAPE_%": 3.968811583626366,
+      "biais": 6.107948930311642,
+      "entraînement_s": 0.032,
+      "prédiction_s": 0.008,
+      "gain_RMSE_%": 11.39,
+      "gain_MAE_%": 6.05
+    },
+    "Forêt aléatoire": {
+      "MAE": 21.41476476961385,
+      "RMSE": 28.649257386023212,
+      "MAPE_%": 4.064046396318611,
+      "biais": -0.9459212940132956,
+      "entraînement_s": 0.895,
+      "prédiction_s": 0.054,
+      "gain_RMSE_%": 5.77,
+      "gain_MAE_%": 1.29
+    },
+    "XGBoost": {
+      "MAE": 22.731280231810455,
+      "RMSE": 29.621160306083794,
+      "MAPE_%": 4.431946312597371,
+      "biais": 4.2335473599350255,
+      "entraînement_s": 0.184,
+      "prédiction_s": 0.005,
+      "gain_RMSE_%": 2.58,
+      "gain_MAE_%": -4.78
+    },
+    "XGBoost sur écart à la veille": {
+      "MAE": 23.496503905342347,
+      "RMSE": 30.340508047402935,
+      "MAPE_%": 4.580143002569522,
+      "biais": 2.8614115678557415,
+      "entraînement_s": 0.18,
+      "prédiction_s": 0.006,
+      "gain_RMSE_%": 0.21,
+      "gain_MAE_%": -8.31
+    }
+  }
+}

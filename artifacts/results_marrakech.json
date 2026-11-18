@@ -1,0 +1,83 @@
+{
+  "city": "marrakech",
+  "target": "load_kw",
+  "selected_on_validation": "Régression linéaire",
+  "val_scores": {
+    "Régression linéaire": {
+      "MAE": 125.90661817480009,
+      "RMSE": 148.51610932903597,
+      "MAPE_%": 8.278339872617872,
+      "biais": -58.04385464343882
+    },
+    "Forêt aléatoire": {
+      "MAE": 126.87224729828193,
+      "RMSE": 155.6032290948998,
+      "MAPE_%": 8.362985735282862,
+      "biais": -47.46196714191544
+    },
+    "XGBoost": {
+      "MAE": 123.2852248728601,
+      "RMSE": 153.73701013450705,
+      "MAPE_%": 8.118715337969187,
+      "biais": -49.67549291725367
+    },
+    "XGBoost sur écart à la veille": {
+      "MAE": 119.33906506645224,
+      "RMSE": 150.72276714886738,
+      "MAPE_%": 7.932480869132365,
+      "biais": -30.357816445676843
+    }
+  },
+  "test_metrics": {
+    "Référence (Naïve 24 h)": {
+      "MAE": 131.19202898550725,
+      "RMSE": 177.86481018032512,
+      "MAPE_%": 10.742563499324264,
+      "biais": -2.76268115942029,
+      "entraînement_s": 0.0,
+      "prédiction_s": 0.0,
+      "gain_RMSE_%": 0.0,
+      "gain_MAE_%": 0.0
+    },
+    "Régression linéaire": {
+      "MAE": 115.60263218411912,
+      "RMSE": 142.21639519376302,
+      "MAPE_%": 9.155432262030327,
+      "biais": -42.82487388817181,
+      "entraînement_s": 0.026,
+      "prédiction_s": 0.008,
+      "gain_RMSE_%": 20.04,
+      "gain_MAE_%": 11.88
+    },
+    "Forêt aléatoire": {
+      "MAE": 121.8602694465895,
+      "RMSE": 152.40481938068507,
+      "MAPE_%": 9.698199165185201,
+      "biais": -34.060310318886074,
+      "entraînement_s": 0.839,
+      "prédiction_s": 0.057,
+      "gain_RMSE_%": 14.31,
+      "gain_MAE_%": 7.11
+    },
+    "XGBoost": {
+      "MAE": 124.99580858755803,
+      "RMSE": 151.53210455076888,
+      "MAPE_%": 9.807932544995886,
+      "biais": -53.53589659612536,
+      "entraînement_s": 0.188,
+      "prédiction_s": 0.006,
+      "gain_RMSE_%": 14.8,
+      "gain_MAE_%": 4.72
+    },
+    "XGBoost sur écart à la veille": {
+      "MAE": 119.76516828690498,
+      "RMSE": 152.79197454001698,
+      "MAPE_%": 9.599637404107735,
+      "biais": -34.139949221694884,
+      "entraînement_s": 0.178,
+      "prédiction_s": 0.005,
+      "gain_RMSE_%": 14.1,
+      "gain_MAE_%": 8.71
+    }
+  }
+}
