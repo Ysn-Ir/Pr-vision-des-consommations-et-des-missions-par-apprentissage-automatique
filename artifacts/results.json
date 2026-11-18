@@ -1,0 +1,85 @@
+{
+  "baseline": "Naïve 24 h",
+  "selected_on_validation": "XGBoost sur écart à la veille",
+  "best_rf": {
+    "max_depth": null,
+    "min_samples_leaf": 1,
+    "max_features": 1.0
+  },
+  "best_xgb": {
+    "max_depth": 5,
+    "learning_rate": 0.03,
+    "n_estimators": 300
+  },
+  "test_metrics": {
+    "Référence (Naïve 24 h)": {
+      "MAE": 2076.125,
+      "RMSE": 3188.242,
+      "MAPE_%": 3.331,
+      "biais": 55.088,
+      "entraînement_s": 0.0,
+      "prédiction_s": 0.0,
+      "gain_RMSE_%": 0.0,
+      "gain_MAE_%": 0.0
+    },
+    "Régression linéaire": {
+      "MAE": 1558.344,
+      "RMSE": 2099.857,
+      "MAPE_%": 2.535,
+      "biais": 40.185,
+      "entraînement_s": 0.027,
+      "prédiction_s": 0.007,
+      "gain_RMSE_%": 34.137,
+      "gain_MAE_%": 24.94
+    },
+    "Forêt aléatoire": {
+      "MAE": 1621.742,
+      "RMSE": 2342.031,
+      "MAPE_%": 2.562,
+      "biais": 356.963,
+      "entraînement_s": 3.315,
+      "prédiction_s": 0.103,
+      "gain_RMSE_%": 26.542,
+      "gain_MAE_%": 21.886
+    },
+    "XGBoost": {
+      "MAE": 1502.61,
+      "RMSE": 2091.028,
+      "MAPE_%": 2.388,
+      "biais": 449.998,
+      "entraînement_s": 0.414,
+      "prédiction_s": 0.005,
+      "gain_RMSE_%": 34.414,
+      "gain_MAE_%": 27.624
+    },
+    "XGBoost sur écart à la veille": {
+      "MAE": 1471.244,
+      "RMSE": 2037.391,
+      "MAPE_%": 2.335,
+      "biais": 674.851,
+      "entraînement_s": 0.351,
+      "prédiction_s": 0.006,
+      "gain_RMSE_%": 36.097,
+      "gain_MAE_%": 29.135
+    }
+  },
+  "factors_kgCO2_per_kWh": {
+    "bas": 0.596,
+    "central": 0.658,
+    "haut": 0.72
+  },
+  "data_quality": {
+    "lignes": 52416,
+    "debut": "2017-01-01 00:00:00",
+    "fin": "2017-12-30 23:50:00",
+    "horodatages_dupliques": 0,
+    "valeurs_manquantes": 0,
+    "pas_de_temps_observes": {
+      "0 days 00:10:00": 52415
+    },
+    "pas_manquants": 0,
+    "sequences_figees_>=6 (Zone 1)": 0,
+    "sequences_figees_>=6 (Zone 2)": 0,
+    "sequences_figees_>=6 (Zone 3)": 0
+  }
+}
