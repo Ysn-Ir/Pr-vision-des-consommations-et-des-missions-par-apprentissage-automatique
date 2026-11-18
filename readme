@@ -71,18 +71,21 @@ uvicorn api:app --reload
 - `GET /api/morocco-cities` : Synthèse des indicateurs énergétiques pour Marrakech, Laâyoune et Fès.
 - `GET /api/presets` : Liste de journées représentatives (Canicule, Vague de froid, Ramadan, etc.).
 
-### 3.3 Réexécution du notebook
-Pour réexécuter le notebook complet et regénérer les artefacts :
+### 3.3 Réexécution du notebook et des modèles multi-villes
+* Pour réexécuter le notebook principal de Tétouan :
 ```bash
 jupyter nbconvert --to notebook --execute --inplace projet04_prevision_tetouan.ipynb
+```
+* Pour réentraîner et évaluer les modèles sur Marrakech et Laâyoune :
+```bash
+python train_multi_city.py
 ```
 
 ---
 
-## 4. Résultats certifiés sur la période d'essai (Nov–Déc 2017)
+## 4. Résultats certifiés sur la période d'essai
 
-* **Période d'évaluation :** 1er novembre au 30 décembre 2017 (60 jours, 1 440 heures).
-* **Protocole strict anti-fuite :** Variables de charge décalées d'au moins 24 h ; hyperparamètres réglés exclusivement sur septembre–octobre.
+### 4.1 Tétouan (Novembre–Décembre 2017, 1 440 heures)
 
 | Modèle | MAE (kW) | RMSE (kW) | MAPE (%) | Biais (kW) | Gain RMSE vs Réf. | Gain MAE vs Réf. |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -92,7 +95,15 @@ jupyter nbconvert --to notebook --execute --inplace projet04_prevision_tetouan.i
 | **XGBoost standard** | 1 502.6 | 2 091.0 | 2.39 % | +450.0 | +34.4 % | +27.6 % |
 | **XGBoost sur écart à la veille** ⭐ | **1 471.2** | **2 037.4** | **2.34 %** | +674.9 | **+36.1 %** | **+29.1 %** |
 
-⭐ *Modèle retenu sur la validation et déployé dans l'application web.*
+⭐ *Modèle retenu sur la validation de Tétouan.*
+
+### 4.2 Benchmark multi-territoires (Marrakech & Laâyoune)
+
+| Territoire | Grandeur & Période d'essai | Modèle Retenu | RMSE | MAE | MAPE (%) | Gain RMSE vs Réf. |
+| :--- | :--- | :--- | :---: | :---: | :---: | :---: |
+| **Tétouan** | Charge urbaine (kW) &middot; Nov–Déc 2017 | XGBoost sur écart | 2 037.4 kW | 1 471.2 kW | 2.34 % | **+36.1 %** |
+| **Marrakech** | Puissance active 22 kV (kW) &middot; Nov–Jan 2023 | Régression Linéaire | 142.2 kW | 115.6 kW | 9.16 % | **+20.0 %** |
+| **Laâyoune** | Courant total 22 kV (A) &middot; Juil–Août 2023 | Régression Linéaire | 26.9 A | 20.4 A | 3.97 % | **+11.4 %** |
 
 ---
 
